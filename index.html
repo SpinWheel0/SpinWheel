@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Spin Wheel</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="spinBtn">Spin</div>
+    <div class="wheel">
+      <div class="number" style="--i:1;--clr:#db7093;"><span>Bite Release</span></div>
+      <div class="number" style="--i:2;--clr:#20b2aa;"><span>Front Choke Release</span></div>
+      <div class="number" style="--i:3;--clr:#d63e92;"><span>Stripping a Grab</span></div>
+      <div class="number" style="--i:4;--clr:#daa520;"><span>Wrist Release</span></div>
+      <div class="number" style="--i:5;--clr:#ff340f;"><span>Shoulder Check</span></div>
+      <div class="number" style="--i:6;--clr:#ff7f50;"><span>Protective Shuffle</span></div>
+      <div class="number" style="--i:7;--clr:#3cb371;"><span>Safety Stance</span></div>
+      <div class="number" style="--i:8;--clr:#4169e1;"><span>Elbow Check</span></div>
+      <div class="number" style="--i:9;--clr:#fbddaf;"><span>One Person Stability Hold</span></div>
+      <div class="number" style="--i:10;--clr:#8300ff;"><span>Two Person Stability Hold</span></div>
+    </div>
+  </div>
+  <div class="video-container"></div>
+  <button class="reset" onclick="resetWheel()">Reset Wheel</button>
+    <script>
+const wheel = document.querySelector(".wheel");
+const spinBtn = document.querySelector(".spinBtn");
+const resetBtn = document.querySelector(".reset");
+const number = document.querySelectorAll('.number');
+
+let deg = 0;
+let selectedAnswer = "";
+
+const videos = {
+  "Bite Release": "https://drive.google.com/file/d/1saUdCdAEXKqfeVgA740FPuIh_3uGwwOs/preview",
+  "Front Choke Release": "https://drive.google.com/file/d/1iL4_45vR9bmBrT_a224GSlgpnTJtOUSK/preview",
+  "Stripping a Grab": "https://drive.google.com/file/d/18M9A0u9OXmMbz3KZ5fN0EpmIAyDtNzQL/preview",
+  "Wrist Release": "https://drive.google.com/file/d/1T-YQAWBTdUcmrGKZAQKcczGSGjleGJ7i/preview",
+  "Shoulder Check": "https://drive.google.com/file/d/1oJFz7aZLE7L_KQCwhw4HJ4d3ClIsmJL1/preview",
+  "Protective Shuffle": "https://drive.google.com/file/d/1s4Wl3CXqhJcQ549_aswrg_DcnmOSxwOP/preview",
+  "Safety Stance": "https://drive.google.com/file/d/1JQe133BZQa9DI_mZPmCynxggb3R526s3/preview",
+  "Elbow Check": "https://drive.google.com/file/d/15o3NbM722iajeHAv7q1L7bwcBM4fuAOC/preview",
+  "One Person Stability Hold": "https://drive.google.com/file/d/1ulV-1nrLGCQ0mPOC0sw_S_zvYavPmo6u/preview",
+  "Two Person Stability Hold": "https://drive.google.com/file/d/13FRXw2Tsc-zbbkwtUfllY1Jc2jShg09P/preview",
+};
+
+spinBtn.addEventListener("click", () => {
+  spinBtn.style.pointerEvents = "none";
+  deg = Math.floor(5000 + Math.random() * 5000);
+  wheel.style.transition = "all 10s ease-out";
+  wheel.style.transform = `rotate(${deg}deg)`;
+
+  wheel.classList.add("blur");
+  setTimeout(() => {
+    wheel.classList.remove("blur");
+  }, 10000);
+
+  setTimeout(() => {
+    spinBtn.style.pointerEvents = "auto";
+    wheel.style.transition = "none";
+    const selected = Math.floor((deg % 360) / (360 / 10));
+    selectedAnswer = document.querySelectorAll(".number span")[selected].innerText;
+    alert(`You selected: ${selectedAnswer}`);
+    if (selectedAnswer in videos) {
+      const videoContainer = document.querySelector(".video-container");
+      const video = document.createElement("iframe");
+      video.src = videos[selectedAnswer];
+      videoContainer.innerHTML = "";
+      videoContainer.appendChild(video);
+      videoContainer.style.display = "block";
+    }
+  }, 10000);
+});
+
+resetBtn.addEventListener("click", () => {
+  selectedAnswer = "";
+  const videoContainer = document.querySelector(".video-container");
+  videoContainer.innerHTML = "";
+  videoContainer.style.display = "none";
+  wheel.style.transform = "none";
+});
+    </script>
+</body>
+</html>
